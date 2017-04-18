@@ -1,7 +1,7 @@
 import unittest, mock, requests
 import fact_generator as FG
 
-api_url = ""
+api_url = "http://127.0.0.1:8080/api"
 
 class TestInternalMethods(unittest.TestCase):
 
@@ -28,7 +28,7 @@ class TestInternalMethods(unittest.TestCase):
 		self.assertEqual(return_subject, 'Barack Obama')
 		self.assertTrue('Obama' in facts)
 		print(response)
-		print("\n\n")
+		print("\n")
 
 
 	def test_get_fact_subject_fail(self):
@@ -41,7 +41,7 @@ class TestInternalMethods(unittest.TestCase):
 		self.assertEqual(return_subject, 'error')
 		self.assertTrue('ergopoiewgporewom' in facts)
 		print(response)
-		print("\n\n")
+		print("\n")
 
 
 	def test_get_fact_random(self):
@@ -56,49 +56,49 @@ class TestInternalMethods(unittest.TestCase):
 		print(subject1, "  -----  ", subject2)
 		self.assertFalse(subject1 == subject2)
 
-		print("\n\n")
+		print("\n")
 
 class TestExternalMethods(unittest.TestCase):
 
 	@unittest.skipIf(api_url is "", "This test is disabled until a URL has been defined for the API")
 	def test_get_fact_subject(self):
 		""" Tests that the API can return codes and facts about Barack Obama"""
-		subject = 'Barack Obama'
-		payload = {"subject":subject}
-		response = requests.get(api_url, params=payload)
+		url = api_url + "/subject"
+		topic = 'Barack Obama'
+		payload = {"topic":topic}
+		response = requests.get(url, params=payload)
 		self.assertEqual(200, response.status_code)
 		json_response = response.json()
 		return_subject = json_response["subject"]
-		self.assertEqual(subject, return_subject)
-		fact = json_response["message"]
+		self.assertEqual(topic, return_subject)
+		fact = json_response["facts"]
 		self.assertTrue('Obama' in fact)
 
 	@unittest.skipIf(api_url is "", "This test is disable until a URL has been defined for the API")
 	def test_get_fact_subject_fail(self):
 		""" Tests that an error message is returned when an invalid subject is given"""
-		subject = 'ergopoiewgporewom'
-		payload = {"subject":subject}
-		response = requests.get(api_url, params=payload)
+		url = api_url + "/subject"
+		topic = 'ergopoiewgporewom'
+		payload = {"topic":topic}
+		response = requests.get(url, params=payload)
 		self.assertEqual(404, response.status_code)		
 		json_response = response.json()
-		return_subject = json_response["subject"]
-		self.assertEqual(return_subject, 'error')
-		fact = json_response["message"]
-		self.assertEqual(return_subject, 'error')
-		self.assertTrue(subject in fact)
+		return_output = json_response["error"]
+		self.assertTrue(topic in return_output)
 
 	@unittest.skipIf(api_url is "", "This test is disable until a URL has been defined for the API")
 	def test_get_fact_random(self):
 		""" Tests that a message is returned with a random subject"""
-		response1 = requests.get(api_url)
+		url = api_url + "/random"
+		response1 = requests.get(url)
 		json_response1 = response1.json()
 		subject1 = json_response1["subject"]
 
-		response2 = requests.get(api_url)
+		response2 = requests.get(url)
 		json_response2 = response2.json()
 		subject2 = json_response2["subject"]
 
-		print(subject1, "  -----  ", subject2)
+		print("\n\n", subject1, "  -----  ", subject2, "\n")
 		self.assertFalse(subject1 == subject2)
 
 
