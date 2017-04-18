@@ -1,0 +1,78 @@
+---
+swagger: "2.0"
+info:
+  description: "Generates a random fact based on the unofficial Wikipedia API  and\
+    \ Natural Language Toolkit modules."
+  version: "1.0.0"
+  title: "Team 1 Fact Generator"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /subject:
+    get:
+      tags:
+      - "Facts"
+      summary: "Generates a random fact about a particular topic"
+      description: ""
+      operationId: "get_fact_subject"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "topic"
+        in: "query"
+        description: "The topic that a fact should be related to"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Facts about the subject"
+          schema:
+            type: "integer"
+            format: "int32"
+        404:
+          description: "Facts about the subject could not be found"
+          schema:
+            type: "integer"
+            format: "int32"
+        502:
+          description: "There was an error in the Wikipedia API"
+          schema:
+            type: "integer"
+            format: "int32"
+      x-swagger-router-controller: "swagger_server.controllers.facts_controller"
+  /random:
+    get:
+      tags:
+      - "Facts"
+      summary: "Generates a random fact about a random subject"
+      description: ""
+      operationId: "get_fact_random"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters: []
+      responses:
+        200:
+          description: "The request was accepted and a fact was returned"
+          schema:
+            type: "integer"
+            format: "int32"
+        502:
+          description: "There was an error in the Wikipedia API"
+          schema:
+            type: "integer"
+            format: "int32"
+      x-swagger-router-controller: "swagger_server.controllers.facts_controller"
+definitions:
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+      fields:
+        type: "string"
