@@ -60,10 +60,46 @@ class TestInternalMethods(unittest.TestCase):
 
 class TestExternalMethods(unittest.TestCase):
 
-	@unittest.skipIf(api_url is "", "THIS SHIT AINT HERE")
+	@unittest.skipIf(api_url is "", "This test is disabled until a URL has been defined for the API")
 	def test_get_fact_subject(self):
-		payload = {"subject":"Barack Obama"}
+		""" Tests that the API can return codes and facts about Barack Obama"""
+		subject = 'Barack Obama'
+		payload = {"subject":subject}
 		response = requests.get(api_url, params=payload)
+		self.assertEqual(200, response.status_code)
+		json_response = response.json()
+		return_subject = json_response["subject"]
+		self.assertEqual(subject, return_subject)
+		fact = json_response["message"]
+		self.assertTrue('Obama' in fact)
+
+	@unittest.skipIf(api_url is "", "This test is disable until a URL has been defined for the API")
+	def test_get_fact_subject_fail(self):
+		""" Tests that an error message is returned when an invalid subject is given"""
+		subject = 'ergopoiewgporewom'
+		payload = {"subject":subject}
+		response = requests.get(api_url, params=payload)
+		self.assertEqual(404, response.status_code)		
+		json_response = response.json()
+		return_subject = json_response["subject"]
+		self.assertEqual(return_subject, 'error')
+		fact = json_response["message"]
+		self.assertEqual(return_subject, 'error')
+		self.assertTrue(subject in fact)
+
+	@unittest.skipIf(api_url is "", "This test is disable until a URL has been defined for the API")
+	def test_get_fact_random(self):
+		""" Tests that a message is returned with a random subject"""
+		response1 = requests.get(api_url)
+		json_response1 = response1.json()
+		subject1 = json_response1["subject"]
+
+		response2 = requests.get(api_url)
+		json_response2 = response2.json()
+		subject2 = json_response2["subject"]
+
+		print(subject1, "  -----  ", subject2)
+		self.assertFalse(subject1 == subject2)
 
 
 if __name__ == '__main__':
