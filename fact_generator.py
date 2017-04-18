@@ -34,7 +34,7 @@ def get_fact_subject(subject):
 	summary = page.summary
 	sentences = get_sentences(summary)
 	if len(sentences) == 1:
-		return sentences[0]
+		return subject, sentences[0]
 	return subject, sentences[0] + " " + sentences[random.randint(1, len(sentences) - 1)]
 
 
