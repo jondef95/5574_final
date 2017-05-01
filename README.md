@@ -7,18 +7,23 @@ This contribution to the team project contains the Python-Flask server that serv
 There are two Docker images currently available to run:
 
 ### Without Authentication
-To run an image without authentication, either download the [Docker Image](https://hub.docker.com/r/fact-gen-server) by running the commands:
+To run an image without authentication, either download the [Docker Image](https://hub.docker.com/r/jondef95/fact-gen-server) by running the commands:
+
 `sudo docker run -p 8080:8080 jondef95/fact-gen-server`
 
 or use the Dockerfile in the api-server directory:
+
 `sudo docker build -t fact-gen-server api-server/`
+
 `sudo docker run -p 8080:8080 fact-gen-server`
 
 ### With Authentication
-To run an image of the fact generator with authentication, either download the [Docker Image](https://hub.docker.com/r/factauth_web) by running the commands:
+To run an image of the fact generator with authentication, either download the [Docker Image](https://hub.docker.com/r/jondef95/factauth_web) by running the commands:
+
 `sudo docker run -p 8000:8000 jondef95/factauth_web`
 
 or use the Docker-Compose file in the Fact_Auth directory:
+
 `sudo docker-compose up Fact_Auth/`
 
 ## Running the Tests
