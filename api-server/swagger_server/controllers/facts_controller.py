@@ -17,7 +17,7 @@ def get_fact_random():
     try:
         subject, facts = FG.get_fact_random()
     except:
-        return jsonify(Error(502, "An internal error occurred while attempting to contact Wikipedia")), status.HTTP_502_BAD_GATEWAY
+        return {"error": "An internal error occurred while attempting to contact Wikipedia"}, status.HTTP_502_BAD_GATEWAY
     response = {}
     if (subject is not "error"):
         response["subject"] = subject
@@ -41,7 +41,7 @@ def get_fact_subject(topic):
     try:
         subject, facts = FG.get_fact_subject(topic)
     except:
-        return jsonify(Error(502, "An internal error occurred while attempting to contact Wikipedia")), status.HTTP_502_BAD_GATEWAY
+        return {"error": "An internal error occurred while attempting to contact Wikipedia"}, status.HTTP_502_BAD_GATEWAY
     response = {}
     if (subject is not "error"):
         response["subject"] = subject
